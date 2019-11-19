@@ -1,0 +1,28 @@
+version: "2"
+services:
+  client:
+    container_name: client
+    restart: always
+    build: ./dashboard
+
+    ports:
+      - "3000:80"
+    links:
+      - server
+  server:
+    container_name: server
+    restart: always
+    build: ./api
+    environment:
+     - NODE_ENV=production
+    ports:
+      - "8000:8000"
+    links:
+      - mongo
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - ./data:/data/db
+    ports:
+      - "27017:27017"
